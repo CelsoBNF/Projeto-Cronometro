@@ -1,0 +1,99 @@
+<!--Nome: Projeto Cronometro-->
+<!--Estudante: Celso de Barros Natal Filho-->
+<!--Universidade: Vale do Paraíba-->
+
+
+<!--Site do "Projeto Cronometro"-->
+<html>
+<head>
+    <title>Projeto Cronometro - JavaScript</title>
+    <style>
+        .container{
+            text-align: center;
+        }
+
+        button{
+            background: #069;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            border:0;
+        }
+
+    </style>
+</head>
+<!--Corpo do site "Projeto Cronometro"-->
+<body>
+    <audio id="sound" src="Alarm.mp3" style="display: none;"></audio>
+
+    <div class="container">
+        <h2>Minutos</h2>
+        <select id="minutos" name="minutos"></select>
+
+        <h2>Segundos</h2>
+        <select id="segundos" name="segundos"></select>
+        <br/>
+        <br/>
+        <button id="comecar">Começar!</button>
+
+        <div id="display">
+            <h3></h3>
+        </div><!--display-->
+    </div><!--container-->
+               
+
+    <script>
+        //Função que recupera o elemento com base no ID, ou seja, nessa variável da pra fazer várias manipulações. Ou seja, foi recuperado o display, e os botões de minuto, segundos e comecar
+        var display = document.getElementById('display');
+        
+        var minutos = document.getElementById('minutos');
+        var segundos = document.getElementById('segundos');
+
+        var comecar = document.getElementById('comecar');
+
+        var cronometroSeg; 
+
+        var minutoAtual;
+        var segundoAtual;
+
+        var interval;
+
+        for(var i = 0; i <= 60; i++){
+            minutos.innerHTML+='<option value="'+i+'"> '+i+'</option>';
+            ;
+        }
+
+        for(var i = 1; i <= 60; i++){
+            segundos.innerHTML+='<option value="'+i+'"> '+i+'</option>';
+            ;
+        }
+
+        comecar.addEventListener('click',function(){ //Foi feito o evento do tipo click com uma função de callback (o que acontece caso clique no botão comecar)
+            minutoAtual = minutos.value;
+            segundoAtual = segundos.value;
+
+            display.childNodes[1].innerHTML = minutoAtual + ":"+segundoAtual;//Child Nodes tem como função pegar todos os eventos filhos, no caso desse projeto só tem 1, chamamos o mesmo pelo índice 1 que é o (h3).
+
+            interval = setInterval(function(){ //Foi feito um evento para o cronômetro, sendo cronômetro, sempre fazendo o tempo diminuir.
+
+                segundoAtual--;
+                if(segundoAtual <= 0){
+                    if(minutoAtual >0){
+                        minutoAtual--;
+                        segundoAtual = 59;                        
+                    }else{
+                        alert("Acabou!");
+                        document.getElementById("sound").play();
+                        clearInterval(interval); 
+                    }
+                }
+
+                
+                display.childNodes[1].innerHTML = minutoAtual + ":"+segundoAtual; //Foi feito 2x para não precisar esperar 1 segundo para ser atualizado. Ser instantaneo com o click
+            },1000);
+        })
+    </script>
+
+</body>
+
+</html>
